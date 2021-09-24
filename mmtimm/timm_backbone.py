@@ -1,9 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-try:
-    import timm
-except ImportError:
-    timm = None
-
+import timm
 from mmcls.models.backbones.base_backbone import BaseBackbone
 from mmcls.models.builder import BACKBONES
 
