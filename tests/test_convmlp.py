@@ -43,7 +43,7 @@ def test_timm_backbone(backbone, size):
                                            ('convmlp_m', (1, 512)),
                                            ('convmlp_l', (1, 768))])
 def test_features_only(backbone, size):
-    # Test from timm
+    # Test all out_indices from timm
     model = timm.create_model(backbone,
                               pretrained=False,
                               features_only=True,
@@ -52,6 +52,19 @@ def test_features_only(backbone, size):
     imgs = torch.randn(1, 3, 224, 224)
     feat = model(imgs)
     assert len(feat) == 4
+    for f, c, r in zip(feat, model.feature_info.channels(),
+                       model.feature_info.reduction()):
+        assert f.shape == torch.Size((1, c, 224 // r, 224 // r))
+
+    # Test picked out_indices from timm
+    model = timm.create_model(backbone,
+                              pretrained=False,
+                              features_only=True,
+                              out_indices=(2, 3))
+
+    imgs = torch.randn(1, 3, 224, 224)
+    feat = model(imgs)
+    assert len(feat) == 2
     for f, c, r in zip(feat, model.feature_info.channels(),
                        model.feature_info.reduction()):
         assert f.shape == torch.Size((1, c, 224 // r, 224 // r))

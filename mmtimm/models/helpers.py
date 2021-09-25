@@ -9,7 +9,6 @@ def mmtimm_build_model_with_cfg(*args, **kwargs):
         features = False
     model = build_model_with_cfg(*args, **kwargs)
     if features:
-        model.features_only = True
-        model.out_indices = out_indices
+        model.set_features_only(out_indices)
 
     return model

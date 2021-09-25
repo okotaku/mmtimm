@@ -249,7 +249,6 @@ class ConvMLP(nn.Module):
                  mlp_ratios,
                  channels=64,
                  n_conv_blocks=3,
-                 classifier_head=True,
                  num_classes=1000,
                  features_only=False,
                  out_indices=(0, 1, 2, 3),
@@ -262,7 +261,7 @@ class ConvMLP(nn.Module):
 
         self.features_only = features_only
         self.out_indices = out_indices
-        self.feature_info = FeatureInfo([
+        self.feature_info_list = [
             {
                 'num_chs': dims[0],
                 'reduction': 8,
@@ -283,7 +282,8 @@ class ConvMLP(nn.Module):
                 'reduction': 32,
                 'module': None
             },
-        ], out_indices)
+        ]
+        self.feature_info = FeatureInfo(self.feature_info_list, out_indices)
         self.tokenizer = ConvTokenizer(embedding_dim=channels)
         self.conv_stages = ConvStage(n_conv_blocks,
                                      embedding_dim_in=channels,
@@ -302,6 +302,11 @@ class ConvMLP(nn.Module):
         self.head = nn.Linear(
             dims[-1], num_classes) if num_classes > 0 else nn.Identity()
         self.apply(self.init_weight)
+
+    def set_features_only(self, out_indices):
+        self.features_only = True
+        self.out_indices = out_indices
+        self.feature_info = FeatureInfo(self.feature_info_list, out_indices)
 
     def reset_classifier(self, x):
         self.head = nn.Identity()
