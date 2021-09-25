@@ -1,5 +1,7 @@
 import pytest
+import timm
 import torch
+from torch import nn
 from torch.nn.modules.batchnorm import _BatchNorm
 
 # todo: use timm backbone from mmcls
@@ -29,3 +31,9 @@ def test_timm_backbone(backbone, size):
     feat = model(imgs)
     assert len(feat) == 1
     assert feat[0].shape == torch.Size(size)
+
+    # test reset_classifier
+    model = timm.create_model(backbone, pretrained=False)
+    assert not isinstance(model.head, nn.Identity)
+    model.reset_classifier(0)
+    assert isinstance(model.head, nn.Identity)

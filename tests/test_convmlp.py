@@ -17,13 +17,9 @@ def check_norm_state(modules, train_state):
     return True
 
 
-@pytest.mark.parametrize('backbone,size', [('cvt_13_224', (1, 384)),
-                                           ('cvt_13_384_22k', (1, 384)),
-                                           ('cvt_13_384', (1, 384)),
-                                           ('cvt_21_224', (1, 384)),
-                                           ('cvt_21_384_22k', (1, 384)),
-                                           ('cvt_21_384', (1, 384)),
-                                           ('cvt_w24', (1, 1024))])
+@pytest.mark.parametrize('backbone,size', [('convmlp_s', (1, 512)),
+                                           ('convmlp_m', (1, 512)),
+                                           ('convmlp_l', (1, 768))])
 def test_timm_backbone(backbone, size):
     # Test from timm
     model = TIMMBackbone(model_name=backbone, pretrained=False)
@@ -41,3 +37,21 @@ def test_timm_backbone(backbone, size):
     assert not isinstance(model.head, nn.Identity)
     model.reset_classifier(0)
     assert isinstance(model.head, nn.Identity)
+
+
+@pytest.mark.parametrize('backbone,size', [('convmlp_s', (1, 512)),
+                                           ('convmlp_m', (1, 512)),
+                                           ('convmlp_l', (1, 768))])
+def test_features_only(backbone, size):
+    # Test from timm
+    model = timm.create_model(backbone,
+                              pretrained=False,
+                              features_only=True,
+                              out_indices=(0, 1, 2, 3))
+
+    imgs = torch.randn(1, 3, 224, 224)
+    feat = model(imgs)
+    assert len(feat) == 4
+    for f, c, r in zip(feat, model.feature_info.channels(),
+                       model.feature_info.reduction()):
+        assert f.shape == torch.Size((1, c, 224 // r, 224 // r))
