@@ -1,6 +1,8 @@
 model,top1,param_count,img_size,dataset
 cvt_w24,87.6,277,384,22k
 cvt_21_384_22k,84.9,32,384,22k
+shuffle_vit_base_patch4_window7_224,84.0,88,224,1k
+shuffle_vit_small_patch4_window7_224,83.6,50,224,1k
 cvt_13_384_22k,83.3,20,384,22k
 cvt_21_384,83.3,32,384,1k
 vip_l7,83.2,83,224,1k
@@ -9,6 +11,7 @@ cvt_13_384,83.0,20,384,1k
 cyclemlp_b4,83.0,52,224,1k
 vip_m7,82.7,55,224,1k
 cvt_21_224,82.5,32,224,1k
+shuffle_vit_tiny_patch4_window7_224,82.4,28,224,1k
 cyclemlp_b3,82.4,38,224,1k
 cvt_13_224,81.6,20,224,1k
 cyclemlp_b2,81.6,27,224,1k

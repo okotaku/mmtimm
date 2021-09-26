@@ -17,9 +17,10 @@ def check_norm_state(modules, train_state):
     return True
 
 
-@pytest.mark.parametrize('backbone,size', [('convmlp_s', (1, 512)),
-                                           ('convmlp_m', (1, 512)),
-                                           ('convmlp_l', (1, 768))])
+@pytest.mark.parametrize('backbone,size',
+                         [('shuffle_vit_tiny_patch4_window7_224', (1, 768)),
+                          ('shuffle_vit_small_patch4_window7_224', (1, 768)),
+                          ('shuffle_vit_base_patch4_window7_224', (1, 1024))])
 def test_timm_backbone(backbone, size):
     # Test from timm
     model = TIMMBackbone(model_name=backbone, pretrained=False)
@@ -39,8 +40,9 @@ def test_timm_backbone(backbone, size):
     assert isinstance(model.head, nn.Identity)
 
 
-@pytest.mark.parametrize('backbone', [('convmlp_s'), ('convmlp_m'),
-                                      ('convmlp_l')])
+@pytest.mark.parametrize('backbone', [('shuffle_vit_tiny_patch4_window7_224'),
+                                      ('shuffle_vit_small_patch4_window7_224'),
+                                      ('shuffle_vit_base_patch4_window7_224')])
 def test_features_only(backbone):
     # Test all out_indices from timm
     model = timm.create_model(backbone,
