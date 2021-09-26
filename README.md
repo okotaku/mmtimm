@@ -4,3 +4,4 @@
 - Vision Permutator: [github](https://github.com/Andrew-Qibin/VisionPermutator)
 - CvT: [github](https://github.com/microsoft/CvT)
 - Convolutional MLP: [github](https://github.com/SHI-Labs/Convolutional-MLPs)
+- CycleMLP: [github](https://github.com/ShoufaChen/CycleMLP)
