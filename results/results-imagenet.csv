@@ -9,6 +9,7 @@ vip_l7,83.2,83,224,1k
 cyclemlp_b5,83.2,76,224,1k
 cvt_13_384,83.0,20,384,1k
 cyclemlp_b4,83.0,52,224,1k
+deit_base_patch16_224_ctx_product_50_shared_qkv,82.8,86.68,224,1k
 vip_m7,82.7,55,224,1k
 cvt_21_224,82.5,32,224,1k
 shuffle_vit_tiny_patch4_window7_224,82.4,28,224,1k
@@ -16,6 +17,7 @@ cyclemlp_b3,82.4,38,224,1k
 cvt_13_224,81.6,20,224,1k
 cyclemlp_b2,81.6,27,224,1k
 vip_s7,81.5,25,224,1k
+deit_small_patch16_224_ctx_product_50_shared_qkv,81.2,22.17,224,1k
 convmlp_l,80.2,42.7,224,1k
 convmlp_m,79.0,17.4,224,1k
 cyclemlp_b1,78.9,15,224,1k
