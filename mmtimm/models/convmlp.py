@@ -259,6 +259,27 @@ class ConvMLP(nn.Module):
             'blocks, dims and mlp_ratios must agree in size,' \
             f' {len(blocks)}, {len(dims)} and {len(mlp_ratios)} passed.'
 
+        self._set_feature_info(features_only, out_indices, dims)
+        self.tokenizer = ConvTokenizer(embedding_dim=channels)
+        self.conv_stages = ConvStage(n_conv_blocks,
+                                     embedding_dim_in=channels,
+                                     hidden_dim=dims[0],
+                                     embedding_dim_out=dims[0])
+
+        self.stages = nn.ModuleList()
+        for i in range(0, len(blocks)):
+            stage = BasicStage(num_blocks=blocks[i],
+                               embedding_dims=dims[i:i + 2],
+                               mlp_ratio=mlp_ratios[i],
+                               stochastic_depth_rate=0.1,
+                               downsample=(i + 1 < len(blocks)))
+            self.stages.append(stage)
+        self.norm = nn.LayerNorm(dims[-1])
+        self.head = nn.Linear(
+            dims[-1], num_classes) if num_classes > 0 else nn.Identity()
+        self.apply(self.init_weight)
+
+    def _set_feature_info(self, features_only, out_indices, dims):
         self.features_only = features_only
         self.out_indices = out_indices
         self.feature_info_list = [
@@ -284,24 +305,6 @@ class ConvMLP(nn.Module):
             },
         ]
         self.feature_info = FeatureInfo(self.feature_info_list, out_indices)
-        self.tokenizer = ConvTokenizer(embedding_dim=channels)
-        self.conv_stages = ConvStage(n_conv_blocks,
-                                     embedding_dim_in=channels,
-                                     hidden_dim=dims[0],
-                                     embedding_dim_out=dims[0])
-
-        self.stages = nn.ModuleList()
-        for i in range(0, len(blocks)):
-            stage = BasicStage(num_blocks=blocks[i],
-                               embedding_dims=dims[i:i + 2],
-                               mlp_ratio=mlp_ratios[i],
-                               stochastic_depth_rate=0.1,
-                               downsample=(i + 1 < len(blocks)))
-            self.stages.append(stage)
-        self.norm = nn.LayerNorm(dims[-1])
-        self.head = nn.Linear(
-            dims[-1], num_classes) if num_classes > 0 else nn.Identity()
-        self.apply(self.init_weight)
 
     def set_features_only(self, out_indices):
         self.features_only = True
