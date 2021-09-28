@@ -17,11 +17,9 @@ def check_norm_state(modules, train_state):
     return True
 
 
-@pytest.mark.parametrize(
-    'backbone,size',
-    [('shuffle_vit_tiny_patch4_window7_224', (1, 768, 7, 7)),
-     ('shuffle_vit_small_patch4_window7_224', (1, 768, 7, 7)),
-     ('shuffle_vit_base_patch4_window7_224', (1, 1024, 7, 7))])
+@pytest.mark.parametrize('backbone,size',
+                         [('lesa_resnet50', (1, 512 * 4, 14, 14)),
+                          ('lesa_wrn50', (1, 512 * 4, 14, 14))])
 def test_timm_backbone(backbone, size):
     # Test from timm
     model = TIMMBackbone(model_name=backbone, pretrained=False)
@@ -36,14 +34,12 @@ def test_timm_backbone(backbone, size):
 
     # test reset_classifier
     model = timm.create_model(backbone, pretrained=False)
-    assert not isinstance(model.head, nn.Identity)
+    assert not isinstance(model.fc, nn.Identity)
     model.reset_classifier(0)
-    assert isinstance(model.head, nn.Identity)
+    assert isinstance(model.fc, nn.Identity)
 
 
-@pytest.mark.parametrize('backbone', [('shuffle_vit_tiny_patch4_window7_224'),
-                                      ('shuffle_vit_small_patch4_window7_224'),
-                                      ('shuffle_vit_base_patch4_window7_224')])
+@pytest.mark.parametrize('backbone', [('lesa_resnet50'), ('lesa_wrn50')])
 def test_features_only(backbone):
     # Test all out_indices from timm
     model = timm.create_model(backbone,
