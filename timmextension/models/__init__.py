@@ -1,4 +1,5 @@
 # flake8: noqa:F401
+from .contnet import contnet_b, contnet_m
 from .convmlp import convmlp_l, convmlp_m, convmlp_s
 from .cvt import (cvt_13_224, cvt_13_384, cvt_13_384_22k, cvt_21_224,
                   cvt_21_384, cvt_21_384_22k, cvt_w24)

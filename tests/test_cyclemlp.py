@@ -25,7 +25,6 @@ def check_norm_state(modules, train_state):
 def test_timm_backbone(backbone, size):
     # Test from timm
     model = TIMMBackbone(model_name=backbone, pretrained=False)
-    model.init_weights()
     model.train()
     assert check_norm_state(model.modules(), True)
 
