@@ -527,14 +527,14 @@ class ShuffleTransformer(nn.Module):
         if self.features_only:
             return out
 
-        x = self.avgpool(x)
-        x = torch.flatten(x, 1)
         return x
 
     def forward(self, x):
         x = self.forward_features(x)
         if self.features_only:
             return x
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
         x = self.head(x)
         return x
 
