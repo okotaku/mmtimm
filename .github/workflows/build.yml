@@ -20,7 +20,7 @@ jobs:
       - name: Check docstring coverage
         run: |
           pip install interrogate
-          interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --ignore-regex "__repr__" --fail-under 0 mmtimm
+          interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --ignore-regex "__repr__" --fail-under 0 timmextension
   build_cpu:
     runs-on: ubuntu-latest
     strategy:
@@ -51,7 +51,7 @@ jobs:
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
         run: |
-          coverage run --branch --source=mmtimm -m pytest tests/
+          coverage run --branch --source=timmextension -m pytest tests/
           coverage xml
           coverage report -m
   build_cuda:
@@ -105,6 +105,6 @@ jobs:
       - name: Run unittests and generate coverage report
         run: |
           pip install -r requirements/tests.txt
-          coverage run --branch --source=mmtimm -m pytest tests/
+          coverage run --branch --source=timmextension -m pytest tests/
           coverage xml
           coverage report -m

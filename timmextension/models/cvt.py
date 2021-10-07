@@ -40,37 +40,37 @@ default_cfgs = {
     'cvt_13_224':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_cvt/CvT-13-224x224-IN-1k.pth'  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_cvt/CvT-13-224x224-IN-1k.pth'  # noqa
     ),
     'cvt_13_384':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_cvt/CvT-13-384x384-IN-1k.pth'  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_cvt/CvT-13-384x384-IN-1k.pth'  # noqa
     ),
     'cvt_13_384_22k':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_cvt/CvT-13-384x384-IN-22k.pth'  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_cvt/CvT-13-384x384-IN-22k.pth'  # noqa
     ),
     'cvt_21_224':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_cvt/CvT-21-224x224-IN-1k.pth'  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_cvt/CvT-21-224x224-IN-1k.pth'  # noqa
     ),
     'cvt_21_384':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_cvt/CvT-21-384x384-IN-1k.pth'  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_cvt/CvT-21-384x384-IN-1k.pth'  # noqa
     ),
     'cvt_21_384_22k':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_cvt/CvT-21-384x384-IN-22k.pth'  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_cvt/CvT-21-384x384-IN-22k.pth'  # noqa
     ),
     'cvt_w24':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_cvt/vip_s7.pth'  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_cvt/vip_s7.pth'  # noqa
     ),
 }
 

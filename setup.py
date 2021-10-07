@@ -21,9 +21,9 @@ def load_links_from_file(filepath):
     return res
 
 
-exec(open('mmtimm/version.py').read())
+exec(open('timmextension/version.py').read())
 setup(
-    name='mmtimm',
+    name='timmextension',
     version=__version__,  # noqa
     description='backbones base on timm',
     author='Takumi Okoshi',
