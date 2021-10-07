@@ -8,7 +8,7 @@ from timm.models.registry import register_model
 from torch.nn import (GELU, BatchNorm2d, Conv2d, Identity, LayerNorm, Linear,
                       Module, ModuleList, ReLU, Sequential)
 
-from .helpers import mmtimm_build_model_with_cfg
+from .helpers import timmextension_build_model_with_cfg
 
 __all__ = ['ConvMLP', 'convmlp_s', 'convmlp_m', 'convmlp_l']
 
@@ -363,16 +363,16 @@ class ConvMLP(nn.Module):
 
 def _convmlp(arch, pretrained, classifier_head, blocks, dims, mlp_ratios,
              *args, **kwargs):
-    model = mmtimm_build_model_with_cfg(ConvMLP,
-                                        arch,
-                                        pretrained=pretrained,
-                                        default_cfg=default_cfgs[arch],
-                                        blocks=blocks,
-                                        dims=dims,
-                                        mlp_ratios=mlp_ratios,
-                                        classifier_head=classifier_head,
-                                        *args,
-                                        **kwargs)
+    model = timmextension_build_model_with_cfg(ConvMLP,
+                                               arch,
+                                               pretrained=pretrained,
+                                               default_cfg=default_cfgs[arch],
+                                               blocks=blocks,
+                                               dims=dims,
+                                               mlp_ratios=mlp_ratios,
+                                               classifier_head=classifier_head,
+                                               *args,
+                                               **kwargs)
     return model
 
 

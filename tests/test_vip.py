@@ -5,7 +5,7 @@ from torch import nn
 from torch.nn.modules.batchnorm import _BatchNorm
 
 # todo: use timm backbone from mmcls
-from mmtimm import TIMMBackbone
+from timmextension import TIMMBackbone
 
 
 def check_norm_state(modules, train_state):

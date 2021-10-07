@@ -4,7 +4,7 @@ from mmcls.models.backbones.base_backbone import BaseBackbone
 from mmcls.models.builder import BACKBONES
 
 
-@BACKBONES.register_module()
+@BACKBONES.register_module(force=True)
 class TIMMBackbone(BaseBackbone):
     """Wrapper to use backbones from timm library. More details can be found in
     `timm <https://github.com/rwightman/pytorch-image-models>`_ .

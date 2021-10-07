@@ -9,7 +9,7 @@ from timm.models.layers import DropPath, trunc_normal_
 from timm.models.registry import register_model
 from torch import nn
 
-from .helpers import mmtimm_build_model_with_cfg
+from .helpers import timmextension_build_model_with_cfg
 
 
 def _cfg(url='', **kwargs):
@@ -31,17 +31,17 @@ default_cfgs = {
     'shuffle_vit_base_patch4_window7_224':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_shuffletransformer/shuffle_vit_base_patch4_window7_224.pth',  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_shuffletransformer/shuffle_vit_base_patch4_window7_224.pth',  # noqa
     ),
     'shuffle_vit_small_patch4_window7_224':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_shuffletransformer/shuffle_vit_small_patch4_window7_224.pth',  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_shuffletransformer/shuffle_vit_small_patch4_window7_224.pth',  # noqa
     ),
     'shuffle_vit_tiny_patch4_window7_224':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_shuffletransformer/shuffle_vit_tiny_patch4_window7_224.pth',  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_shuffletransformer/shuffle_vit_tiny_patch4_window7_224.pth',  # noqa
     ),
 }
 
@@ -545,12 +545,12 @@ def _filter_fn(state_dict):
 
 
 def _shuffle_transformer(arch, pretrained, **kwargs):
-    model = mmtimm_build_model_with_cfg(ShuffleTransformer,
-                                        arch,
-                                        pretrained=pretrained,
-                                        default_cfg=default_cfgs[arch],
-                                        pretrained_filter_fn=_filter_fn,
-                                        **kwargs)
+    model = timmextension_build_model_with_cfg(ShuffleTransformer,
+                                               arch,
+                                               pretrained=pretrained,
+                                               default_cfg=default_cfgs[arch],
+                                               pretrained_filter_fn=_filter_fn,
+                                               **kwargs)
     return model
 
 

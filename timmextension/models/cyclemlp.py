@@ -15,7 +15,7 @@ from torch.nn import init
 from torch.nn.modules.utils import _pair
 from torchvision.ops.deform_conv import deform_conv2d as deform_conv2d_tv
 
-from .helpers import mmtimm_build_model_with_cfg
+from .helpers import timmextension_build_model_with_cfg
 
 
 def _cfg(url='', **kwargs):
@@ -506,12 +506,12 @@ def _filter_fn(state_dict):
 
 
 def _cyclemlp(arch, pretrained, **kwargs):
-    model = mmtimm_build_model_with_cfg(CycleNet,
-                                        arch,
-                                        pretrained=pretrained,
-                                        default_cfg=default_cfgs[arch],
-                                        pretrained_filter_fn=_filter_fn,
-                                        **kwargs)
+    model = timmextension_build_model_with_cfg(CycleNet,
+                                               arch,
+                                               pretrained=pretrained,
+                                               default_cfg=default_cfgs[arch],
+                                               pretrained_filter_fn=_filter_fn,
+                                               **kwargs)
     return model
 
 

@@ -12,16 +12,16 @@ from timm.models.features import FeatureInfo
 from timm.models.registry import register_model
 from torch import Tensor, einsum, nn
 
-from .helpers import mmtimm_build_model_with_cfg
+from .helpers import timmextension_build_model_with_cfg
 
 default_cfgs = {
     'lesa_resnet50': {
         'url':
-        'https://github.com/okotaku/mmtimm/releases/download/w_lesa/lesa_resnet50.pth'  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_lesa/lesa_resnet50.pth'  # noqa
     },
     'lesa_wrn50': {
         'url':
-        'https://github.com/okotaku/mmtimm/releases/download/w_lesa/lesa_wrn50.pth'  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_lesa/lesa_wrn50.pth'  # noqa
     },
 }
 
@@ -707,11 +707,11 @@ def _resnet(
     pretrained,
     **kwargs,
 ):
-    model = mmtimm_build_model_with_cfg(LesaResNet,
-                                        arch,
-                                        pretrained=pretrained,
-                                        default_cfg=default_cfgs[arch],
-                                        **kwargs)
+    model = timmextension_build_model_with_cfg(LesaResNet,
+                                               arch,
+                                               pretrained=pretrained,
+                                               default_cfg=default_cfgs[arch],
+                                               **kwargs)
     return model
 
 

@@ -27,19 +27,19 @@ default_cfgs = {
     'vip_s7':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_vip/vip_s7.pth',
+        'https://github.com/okotaku/timmextension/releases/download/w_vip/vip_s7.pth',  # noqa
         crop_pct=0.9),
     'vip_s14':
     _cfg(url='', crop_pct=0.9),
     'vip_m7':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_vip/vip_m7.pth',
+        'https://github.com/okotaku/timmextension/releases/download/w_vip/vip_m7.pth',  # noqa
         crop_pct=0.9),
     'vip_l7':
     _cfg(
         url=
-        'https://github.com/okotaku/mmtimm/releases/download/w_vip/vip_l7.pth.tar',  # noqa
+        'https://github.com/okotaku/timmextension/releases/download/w_vip/vip_l7.pth.tar',  # noqa
         crop_pct=0.875),
 }
 
