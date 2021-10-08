@@ -9,3 +9,4 @@
 - iRPE: [github](https://github.com/microsoft/Cream)
 - LESA: [github](https://github.com/Chenglin-Yang/LESA_classification)
 - ConTNet: [github](https://github.com/yan-hao-tian/ConTNet)
+- ReXNet: [github](https://github.com/clovaai/rexnet)
