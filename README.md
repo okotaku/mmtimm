@@ -10,3 +10,4 @@
 - LESA: [github](https://github.com/Chenglin-Yang/LESA_classification)
 - ConTNet: [github](https://github.com/yan-hao-tian/ConTNet)
 - ReXNet: [github](https://github.com/clovaai/rexnet)
+- Momentum ResNets: [github](https://github.com/michaelsdr/momentumnet)
