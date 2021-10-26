@@ -13,6 +13,6 @@ from .rexnetv1 import rexnet_10, rexnet_13, rexnet_15, rexnet_20, rexnet_30
 from .shuffle_transformer import (shuffle_vit_base_patch4_window7_224,
                                   shuffle_vit_small_patch4_window7_224,
                                   shuffle_vit_tiny_patch4_window7_224)
-from .swin_ssl import (swin_base_ssl, swin_small_ssl,
-                       swin_tiny_patch4_window7_224_ssl)
+from .swin_ssl import (swin_base_patch4_window12_384_in22k_ssl, swin_base_ssl,
+                       swin_small_ssl, swin_tiny_patch4_window7_224_ssl)
 from .vip import vip_l7, vip_m7, vip_s7, vip_s14
