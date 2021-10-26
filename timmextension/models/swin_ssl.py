@@ -3,8 +3,53 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint as checkpoint
+from timm.models.helpers import build_model_with_cfg
 from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 from timm.models.registry import register_model
+
+default_cfgs = {
+    # patch models (my experiments)
+    'swin_base_patch4_window12_384': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window12_384_22kto1k.pth'  # noqa
+    },
+    'swin_base_patch4_window7_224': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22kto1k.pth'  # noqa
+    },
+    'swin_large_patch4_window12_384': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22kto1k.pth'  # noqa
+    },
+    'swin_large_patch4_window7_224': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window7_224_22kto1k.pth'  # noqa
+    },
+    'swin_small_patch4_window7_224': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_small_patch4_window7_224.pth'  # noqa
+    },
+    'swin_tiny_patch4_window7_224_ssl': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth'  # noqa
+    },
+    'swin_base_patch4_window12_384_in22k': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window12_384_22k.pth'  # noqa
+    },
+    'swin_base_patch4_window7_224_in22k': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22k.pth'  # noqa
+    },
+    'swin_large_patch4_window12_384_in22k': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22k.pth'  # noqa
+    },
+    'swin_large_patch4_window7_224_in22k': {
+        'url':
+        'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window7_224_22k.pth'  # noqa
+    },
+}
 
 
 class Mlp(nn.Module):
@@ -567,7 +612,7 @@ class SwinTransformer(nn.Module):
                  frozen_stages=-1,
                  use_checkpoint=False,
                  pretrained=None,
-                 num_classes=0,
+                 num_classes=1000,
                  use_dense_prediction=False):
         super().__init__()
 
@@ -721,23 +766,44 @@ class SwinTransformer(nn.Module):
         return x
 
 
-@register_model
-def swin_tiny_ssl(patch_size=4, **kwargs):
-    model = SwinTransformer(patch_size=patch_size,
-                            embed_dim=96,
-                            depths=[2, 2, 6, 2],
-                            num_heads=[3, 6, 12, 24],
-                            window_size=7,
-                            mlp_ratio=4.,
-                            qkv_bias=True,
-                            qk_scale=None,
-                            drop_rate=0.,
-                            attn_drop_rate=0.,
-                            drop_path_rate=0.0,
-                            ape=False,
-                            patch_norm=True,
-                            **kwargs)
+def _filter_fn(state_dict):
+    state_dict = state_dict['model']
+    del state_dict['layers.0.blocks.1.attn_mask']
+    del state_dict['layers.1.blocks.1.attn_mask']
+    del state_dict['layers.2.blocks.1.attn_mask']
+    del state_dict['layers.2.blocks.3.attn_mask']
+    del state_dict['layers.2.blocks.5.attn_mask']
+    return state_dict
+
+
+def _swin_ssl(arch, pretrained, **kwargs):
+    model = build_model_with_cfg(SwinTransformer,
+                                 arch,
+                                 pretrained=pretrained,
+                                 default_cfg=default_cfgs[arch],
+                                 pretrained_filter_fn=_filter_fn,
+                                 **kwargs)
     return model
+
+
+@register_model
+def swin_tiny_patch4_window7_224_ssl(pretrained=False, patch_size=4, **kwargs):
+    return _swin_ssl('swin_tiny_patch4_window7_224_ssl',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=96,
+                     depths=[2, 2, 6, 2],
+                     num_heads=[3, 6, 12, 24],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.0,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
 
 
 @register_model
