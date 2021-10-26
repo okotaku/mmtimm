@@ -768,11 +768,22 @@ class SwinTransformer(nn.Module):
 
 def _filter_fn(state_dict):
     state_dict = state_dict['model']
-    del state_dict['layers.0.blocks.1.attn_mask']
-    del state_dict['layers.1.blocks.1.attn_mask']
-    del state_dict['layers.2.blocks.1.attn_mask']
-    del state_dict['layers.2.blocks.3.attn_mask']
-    del state_dict['layers.2.blocks.5.attn_mask']
+    del_layers = [
+        'layers.0.blocks.1.attn_mask',
+        'layers.1.blocks.1.attn_mask',
+        'layers.2.blocks.1.attn_mask',
+        'layers.2.blocks.3.attn_mask',
+        'layers.2.blocks.5.attn_mask',
+        'layers.2.blocks.7.attn_mask',
+        'layers.2.blocks.9.attn_mask',
+        'layers.2.blocks.11.attn_mask',
+        'layers.2.blocks.13.attn_mask',
+        'layers.2.blocks.15.attn_mask',
+        'layers.2.blocks.17.attn_mask',
+    ]
+    for layer in del_layers:
+        if layer in state_dict:
+            del state_dict[layer]
     return state_dict
 
 
@@ -847,14 +858,16 @@ def swin_base_ssl(patch_size=4, **kwargs):
 @register_model
 def swin_base_patch4_window12_384_in22k_ssl(pretrained=False,
                                             patch_size=4,
+                                            num_classes=21841,
                                             **kwargs):
-    return _swin_ssl('swin_tiny_patch4_window7_224_ssl',
+    return _swin_ssl('swin_base_patch4_window12_384_in22k_ssl',
                      pretrained=pretrained,
                      patch_size=patch_size,
+                     num_classes=num_classes,
                      embed_dim=128,
                      depths=[2, 2, 18, 2],
                      num_heads=[4, 8, 16, 32],
-                     window_size=7,
+                     window_size=12,
                      mlp_ratio=4.,
                      qkv_bias=True,
                      qk_scale=None,
