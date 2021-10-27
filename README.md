@@ -11,3 +11,4 @@
 - ConTNet: [github](https://github.com/yan-hao-tian/ConTNet)
 - ReXNet: [github](https://github.com/clovaai/rexnet)
 - Momentum ResNets: [github](https://github.com/michaelsdr/momentumnet)
+- EsViT: [github](https://github.com/microsoft/esvit)

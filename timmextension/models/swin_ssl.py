@@ -1,3 +1,6 @@
+# --------------------------------------------------------
+# Model from official source: https://github.com/microsoft/esvit
+# --------------------------------------------------------
 import numpy as np
 import torch
 import torch.nn as nn
@@ -9,23 +12,23 @@ from timm.models.registry import register_model
 
 default_cfgs = {
     # patch models (my experiments)
-    'swin_base_patch4_window12_384': {
+    'swin_base_patch4_window12_384_ssl': {
         'url':
         'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window12_384_22kto1k.pth'  # noqa
     },
-    'swin_base_patch4_window7_224': {
+    'swin_base_patch4_window7_224_ssl': {
         'url':
         'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22kto1k.pth'  # noqa
     },
-    'swin_large_patch4_window12_384': {
+    'swin_large_patch4_window12_384_ssl': {
         'url':
         'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22kto1k.pth'  # noqa
     },
-    'swin_large_patch4_window7_224': {
+    'swin_large_patch4_window7_224_ssl': {
         'url':
         'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window7_224_22kto1k.pth'  # noqa
     },
-    'swin_small_patch4_window7_224': {
+    'swin_small_patch4_window7_224_ssl': {
         'url':
         'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_small_patch4_window7_224.pth'  # noqa
     },
@@ -37,17 +40,53 @@ default_cfgs = {
         'url':
         'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window12_384_22k.pth'  # noqa
     },
-    'swin_base_patch4_window7_224_in22k': {
+    'swin_base_patch4_window7_224_in22k_ssl': {
         'url':
         'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22k.pth'  # noqa
     },
-    'swin_large_patch4_window12_384_in22k': {
+    'swin_large_patch4_window12_384_in22k_ssl': {
         'url':
         'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22k.pth'  # noqa
     },
-    'swin_large_patch4_window7_224_in22k': {
+    'swin_large_patch4_window7_224_in22k_ssl': {
         'url':
         'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window7_224_22k.pth'  # noqa
+    },
+    'swin_tiny_patch4_window7_224_esvit': {
+        'url':
+        'https://chunyleu.blob.core.windows.net/output/ckpts/esvit/swin/swin_tiny/bl_lr0.0005_gpu16_bs32_dense_multicrop_epoch300/checkpoint_best.pth'  # noqa
+    },
+    'swin_small_patch4_window7_224_esvit': {
+        'url':
+        'https://chunyleu.blob.core.windows.net/output/ckpts/esvit/swin/swin_small/bl_lr0.0005_gpu16_bs32_dense_multicrop_epoch300/checkpoint_best.pth'  # noqa
+    },
+    'swin_base_patch4_window7_224_esvit': {
+        'url':
+        'https://chunyleu.blob.core.windows.net/output/ckpts/esvit/swin/swin_base/bl_lr0.0005_gpu16_bs32_multicrop_epoch300_dino_aug/continued_from0200_dense/checkpoint_best.pth'  # noqa
+    },
+    'swin_base_patch4_window14_224_esvit': {
+        'url':
+        'https://chunyleu.blob.core.windows.net/output/ckpts/esvit/swin/swin_base/bl_lr0.0005_nodes4_gpu16_bs8_multicrop_epoch300_dino_aug_window14_lv/continued_from_epoch0200_dense_norm_true/checkpoint_best.pth'  # noqa
+    },
+    'swin_tiny_patch4_window14_224_esvit': {
+        'url':
+        'https://chunyleu.blob.core.windows.net/output/ckpts/esvit/swin/swin_tiny/bl_lr0.0005_gpu16_bs32_multicrop_epoch300_dino_aug_window14/continued_from0200_dense/checkpoint_best.pth'  # noqa
+    },
+    'swin_small_patch4_window14_224_esvit': {
+        'url':
+        'https://chunyleu.blob.core.windows.net/output/ckpts/esvit/swin/swin_small/bl_lr0.0005_gpu16_bs16_multicrop_epoch300_dino_aug_window14/continued_from0180_dense/checkpoint_best.pth'  # noqa
+    },
+    'swin_tiny_patch4_window7_224_esvit_webvision': {
+        'url':
+        'https://chunyleu.blob.core.windows.net/output/ckpts/esvit/swin/swin_tiny/bl_lr0.0005_gpu16_bs64_multicrop_epoch150_dino_aug_window7_webvision1_debug/checkpoint.pth'  # noqa
+    },
+    'swin_tiny_patch4_window7_224_esvit_openimages_v4': {
+        'url':
+        'https://chunyleu.blob.core.windows.net/output/ckpts/esvit/swin/swin_tiny/bl_lr0.0005_gpu16_bs64_multicrop_epoch150_dino_aug_window7_openimages_v4_debug/checkpoint.pth'  # noqa
+    },
+    'swin_tiny_patch4_window7_224_in22k_esvit': {
+        'url':
+        'https://chunyleu.blob.core.windows.net/output/ckpts/esvit/swin/swin_tiny/bl_lr0.0005_gpu16_bs64_multicrop_epoch300_dino_aug_window7_imagenet22k_debug/checkpoint.pth'  # noqa
     },
 }
 
@@ -818,41 +857,91 @@ def swin_tiny_patch4_window7_224_ssl(pretrained=False, patch_size=4, **kwargs):
 
 
 @register_model
-def swin_small_ssl(patch_size=4, **kwargs):
-    model = SwinTransformer(patch_size=patch_size,
-                            embed_dim=96,
-                            depths=[2, 2, 18, 2],
-                            num_heads=[3, 6, 12, 24],
-                            window_size=7,
-                            mlp_ratio=4.,
-                            qkv_bias=True,
-                            qk_scale=None,
-                            drop_rate=0.,
-                            attn_drop_rate=0.,
-                            drop_path_rate=0.2,
-                            ape=False,
-                            patch_norm=True,
-                            **kwargs)
-    return model
+def swin_small_patch4_window7_224_ssl(pretrained=False,
+                                      patch_size=4,
+                                      **kwargs):
+    return _swin_ssl('swin_small_patch4_window7_224_ssl',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=96,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[3, 6, 12, 24],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.2,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
 
 
 @register_model
-def swin_base_ssl(patch_size=4, **kwargs):
-    model = SwinTransformer(patch_size=patch_size,
-                            embed_dim=128,
-                            depths=[2, 2, 18, 2],
-                            num_heads=[4, 8, 16, 32],
-                            window_size=7,
-                            mlp_ratio=4.,
-                            qkv_bias=True,
-                            qk_scale=None,
-                            drop_rate=0.,
-                            attn_drop_rate=0.,
-                            drop_path_rate=0.3,
-                            ape=False,
-                            patch_norm=True,
-                            **kwargs)
-    return model
+def swin_base_patch4_window12_384_ssl(pretrained=False,
+                                      patch_size=4,
+                                      **kwargs):
+    return _swin_ssl('swin_base_patch4_window12_384_ssl',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=128,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[4, 8, 16, 32],
+                     window_size=12,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_base_patch4_window7_224_ssl(pretrained=False, patch_size=4, **kwargs):
+    return _swin_ssl('swin_base_patch4_window7_224_ssl',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=128,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[4, 8, 16, 32],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_base_patch4_window7_224_in22k_ssl(pretrained=False,
+                                           patch_size=4,
+                                           num_classes=21841,
+                                           **kwargs):
+    return _swin_ssl('swin_base_patch4_window7_224_in22k_ssl',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     num_classes=num_classes,
+                     embed_dim=128,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[4, 8, 16, 32],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
 
 
 @register_model
@@ -874,6 +963,296 @@ def swin_base_patch4_window12_384_in22k_ssl(pretrained=False,
                      drop_rate=0.,
                      attn_drop_rate=0.,
                      drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_large_patch4_window12_384_ssl(pretrained=False,
+                                       patch_size=4,
+                                       **kwargs):
+    return _swin_ssl('swin_large_patch4_window12_384_ssl',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=192,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[6, 12, 24, 48],
+                     window_size=12,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_large_patch4_window7_224_ssl(pretrained=False,
+                                      patch_size=4,
+                                      **kwargs):
+    return _swin_ssl('swin_large_patch4_window7_224_ssl',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=192,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[6, 12, 24, 48],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_large_patch4_window12_384_in22k_ssl(pretrained=False,
+                                             patch_size=4,
+                                             num_classes=21841,
+                                             **kwargs):
+    return _swin_ssl('swin_large_patch4_window12_384_in22k_ssl',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     num_classes=num_classes,
+                     embed_dim=192,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[6, 12, 24, 48],
+                     window_size=12,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_large_patch4_window7_224_in22k_ssl(pretrained=False,
+                                            patch_size=4,
+                                            num_classes=21841,
+                                            **kwargs):
+    return _swin_ssl('swin_large_patch4_window7_224_in22k_ssl',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     num_classes=num_classes,
+                     embed_dim=192,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[6, 12, 24, 48],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_tiny_patch4_window7_224_esvit(pretrained=False,
+                                       patch_size=4,
+                                       **kwargs):
+    return _swin_ssl('swin_tiny_patch4_window7_224_esvit',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=96,
+                     depths=[2, 2, 6, 2],
+                     num_heads=[3, 6, 12, 24],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.0,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_small_patch4_window7_224_esvit(pretrained=False,
+                                        patch_size=4,
+                                        **kwargs):
+    return _swin_ssl('swin_small_patch4_window7_224_esvit',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=96,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[3, 6, 12, 24],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.2,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_base_patch4_window14_224_esvit(pretrained=False,
+                                        patch_size=4,
+                                        **kwargs):
+    return _swin_ssl('swin_base_patch4_window14_224_esvit',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=128,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[4, 8, 16, 32],
+                     window_size=12,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_base_patch4_window7_224_esvit(pretrained=False,
+                                       patch_size=4,
+                                       **kwargs):
+    return _swin_ssl('swin_base_patch4_window7_224_esvit',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=128,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[4, 8, 16, 32],
+                     window_size=12,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.3,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_tiny_patch4_window14_224_esvit(pretrained=False,
+                                        patch_size=4,
+                                        **kwargs):
+    return _swin_ssl('swin_tiny_patch4_window14_224_esvit',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=96,
+                     depths=[2, 2, 6, 2],
+                     num_heads=[3, 6, 12, 24],
+                     window_size=14,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.0,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_small_patch4_window14_224_esvit(pretrained=False,
+                                         patch_size=4,
+                                         **kwargs):
+    return _swin_ssl('swin_small_patch4_window14_224_esvit',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=96,
+                     depths=[2, 2, 18, 2],
+                     num_heads=[3, 6, 12, 24],
+                     window_size=14,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.2,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_tiny_patch4_window7_224_esvit_webvision(pretrained=False,
+                                                 patch_size=4,
+                                                 **kwargs):
+    return _swin_ssl('swin_tiny_patch4_window7_224_esvit_webvision',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=96,
+                     depths=[2, 2, 6, 2],
+                     num_heads=[3, 6, 12, 24],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.0,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_tiny_patch4_window7_224_esvit_openimages_v4(pretrained=False,
+                                                     patch_size=4,
+                                                     **kwargs):
+    return _swin_ssl('swin_tiny_patch4_window7_224_esvit_openimages_v4',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=96,
+                     depths=[2, 2, 6, 2],
+                     num_heads=[3, 6, 12, 24],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.0,
+                     ape=False,
+                     patch_norm=True,
+                     **kwargs)
+
+
+@register_model
+def swin_tiny_patch4_window7_224_in22k_esvit(pretrained=False,
+                                             patch_size=4,
+                                             **kwargs):
+    return _swin_ssl('swin_tiny_patch4_window7_224_in22k_esvit',
+                     pretrained=pretrained,
+                     patch_size=patch_size,
+                     embed_dim=96,
+                     depths=[2, 2, 6, 2],
+                     num_heads=[3, 6, 12, 24],
+                     window_size=7,
+                     mlp_ratio=4.,
+                     qkv_bias=True,
+                     qk_scale=None,
+                     drop_rate=0.,
+                     attn_drop_rate=0.,
+                     drop_path_rate=0.0,
                      ape=False,
                      patch_norm=True,
                      **kwargs)
