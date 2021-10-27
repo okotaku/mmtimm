@@ -18,26 +18,16 @@ def check_norm_state(modules, train_state):
 
 
 @pytest.mark.parametrize(
-    'backbone,size',
-    [('swin_base_patch4_window12_384_in22k_ssl', (1, 1024)),
-     ('swin_base_patch4_window7_224_in22k_ssl', (1, 1024)),
-     ('swin_base_patch4_window7_224_ssl', (1, 1024)),
-     ('swin_base_patch4_window12_384_ssl', (1, 1024)),
-     ('swin_tiny_patch4_window7_224_ssl', (1, 768)),
-     ('swin_small_patch4_window7_224_ssl', (1, 768)),
-     ('swin_large_patch4_window7_224_in22k_ssl', (1, 1536)),
-     ('swin_large_patch4_window7_224_ssl', (1, 1536)),
-     ('swin_large_patch4_window12_384_in22k_ssl', (1, 1536)),
-     ('swin_large_patch4_window12_384_ssl', (1, 1536)),
-     ('swin_base_patch4_window14_224_esvit', (1, 1024)),
-     ('swin_base_patch4_window7_224_esvit', (1, 1024)),
-     ('swin_tiny_patch4_window7_224_esvit', (1, 768)),
-     ('swin_tiny_patch4_window7_224_esvit_openimages_v4', (1, 768)),
-     ('swin_tiny_patch4_window7_224_esvit_webvision', (1, 768)),
-     ('swin_tiny_patch4_window7_224_in22k_esvit', (1, 768)),
-     ('swin_tiny_patch4_window14_224_esvit', (1, 768)),
-     ('swin_small_patch4_window7_224_esvit', (1, 768)),
-     ('swin_small_patch4_window14_224_esvit', (1, 768))])
+    'backbone,size', [('swin_base_patch4_window12_384_in22k_ssl', (1, 1024)),
+                      ('swin_base_patch4_window7_224_in22k_ssl', (1, 1024)),
+                      ('swin_base_patch4_window7_224_ssl', (1, 1024)),
+                      ('swin_base_patch4_window12_384_ssl', (1, 1024)),
+                      ('swin_tiny_patch4_window7_224_ssl', (1, 768)),
+                      ('swin_small_patch4_window7_224_ssl', (1, 768)),
+                      ('swin_large_patch4_window7_224_in22k_ssl', (1, 1536)),
+                      ('swin_large_patch4_window7_224_ssl', (1, 1536)),
+                      ('swin_large_patch4_window12_384_in22k_ssl', (1, 1536)),
+                      ('swin_large_patch4_window12_384_ssl', (1, 1536))])
 def test_timm_backbone(backbone, size):
     # Test from timm
     model = TIMMBackbone(model_name=backbone, pretrained=False)

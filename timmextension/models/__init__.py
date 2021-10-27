@@ -13,8 +13,7 @@ from .shuffle_transformer import (shuffle_vit_base_patch4_window7_224,
                                   shuffle_vit_small_patch4_window7_224,
                                   shuffle_vit_tiny_patch4_window7_224)
 # yapf:disable
-from .swin_ssl import (swin_base_patch4_window7_224_esvit,
-                       swin_base_patch4_window7_224_in22k_ssl,
+from .swin_ssl import (swin_base_patch4_window7_224_in22k_ssl,
                        swin_base_patch4_window7_224_ssl,
                        swin_base_patch4_window12_384_in22k_ssl,
                        swin_base_patch4_window12_384_ssl,
@@ -23,14 +22,7 @@ from .swin_ssl import (swin_base_patch4_window7_224_esvit,
                        swin_large_patch4_window7_224_ssl,
                        swin_large_patch4_window12_384_in22k_ssl,
                        swin_large_patch4_window12_384_ssl,
-                       swin_small_patch4_window7_224_esvit,
                        swin_small_patch4_window7_224_ssl,
-                       swin_small_patch4_window14_224_esvit,
-                       swin_tiny_patch4_window7_224_esvit,
-                       swin_tiny_patch4_window7_224_esvit_openimages_v4,
-                       swin_tiny_patch4_window7_224_esvit_webvision,
-                       swin_tiny_patch4_window7_224_in22k_esvit,
-                       swin_tiny_patch4_window7_224_ssl,
-                       swin_tiny_patch4_window14_224_esvit)
+                       swin_tiny_patch4_window7_224_ssl)
 # yapf:enable
 from .vip import vip_l7, vip_m7, vip_s7, vip_s14
