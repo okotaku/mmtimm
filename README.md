@@ -12,3 +12,4 @@
 - ReXNet: [github](https://github.com/clovaai/rexnet)
 - Momentum ResNets: [github](https://github.com/michaelsdr/momentumnet)
 - EsViT: [github](https://github.com/microsoft/esvit)
+- Dino: [github](https://github.com/facebookresearch/dino)
